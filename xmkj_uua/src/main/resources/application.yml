@@ -1,5 +1,11 @@
 server:
-  port: 8081 #服务端口
+  port: 8081
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8067/eureka/
+      
 spring:
   application:
     name: Uaa
@@ -7,7 +13,7 @@ spring:
     database: 0
     host: 127.0.0.1
     port: 6379
-    password:
+    password: null
     jedis:
       pool:
         max-active: 8
@@ -18,7 +24,21 @@ spring:
     url: jdbc:mysql://192.168.3.4:3306/hjx_mysql?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: 123456
-    
+  druid:
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 from DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: false
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 mybatis-plus:
   config-location: classpath:/mybatis/mybatis-config.xml
   mapper-locations: classpath:/mybatis/mapper/*.xml
@@ -26,4 +46,4 @@ mybatis-plus:
   global-config:
     refresh: true
     db-config:
-      db-type: mysql     
+      db-type: mysql

@@ -16,7 +16,7 @@
 		<!--声明 eureka_server 为当前项目 子模块 ，以后有新的子模块添加也要在此添加 -->
 		<module>xmkj_registry</module>
 		<module>xmkj_gateway</module>
-		<module>xmkj_uua</module>
+		<module>xmkj_common</module>
 	</modules>
 
 	<name>xmkj_parent</name>
@@ -35,6 +35,7 @@
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 		<swagger.version>2.9.2</swagger.version>
+		<product-common.version>0.0.1-SNAPSHOT</product-common.version>
 	</properties>
 
 	<dependencies>
@@ -70,6 +71,11 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.xmkj</groupId>
+				<artifactId>xmkj_common</artifactId>
+				<version>${product-common.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
