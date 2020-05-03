@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zz.xmkj.dao.UserDao">
+
+	<select id="findRolesByUsername"
+		resultType="com.zz.xmkj.domain.Role">
+		select sr.* from uaa_user su
+		left join uaa_user_role sur on
+		su.id = sur.user_id
+		left join uaa_role sr on sur.role_id = sr.id
+		where
+		su.user_name = #{userName}
+	</select>
+
+	<select id="findPermissionsByRoleId"
+		resultType="com.zz.xmkj.domain.Permission">
+		select sp.* from uaa_role sr
+		left join uaa_role_permission
+		srp on sr.id = srp.role_id
+		left join uaa_url_permission sp on
+		srp.permission_id = sp.id
+		where
+		sr.id = = #{roleId}
+	</select>
+
+</mapper>
