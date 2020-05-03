@@ -5,8 +5,24 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
       routes:
       - id: gateway
-        uri: http://www.ityouknow.com
+        uri: lb://MICROSERVICE01
         predicates:
-        - Path=/spring-cloud
+        - Path=/gate
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8067/eureka/ 
+             
+security:
+  oauth2:
+    client:
+      access-token-uri: http://uaa/oauth/token
+      user-authorization-uri: http://uaa/oauth/authorize
+    resource:
+      user-info-uri: http://uaa/user
+      prefer-token-info: false

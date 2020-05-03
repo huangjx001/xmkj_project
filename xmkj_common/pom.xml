@@ -12,13 +12,14 @@
 	<artifactId>xmkj_common</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>xmkj_common</name>
+	<packaging>pom</packaging>
 	<description>公共模块部分</description>
 
 	<properties>
 		<fastjson.version>1.2.47</fastjson.version>
 		<commons-lang.version>2.6</commons-lang.version>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.freemarker</groupId>
