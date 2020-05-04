@@ -42,6 +42,7 @@ mybatis-plus:
   mapper-locations: classpath:/mybatis/mapper/*.xml
   typeAliasesPackage: com.zz.xmkj.domain
   global-config:
-    refresh: true
     db-config:
       db-type: mysql
+swagger:
+  enable: true

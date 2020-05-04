@@ -69,18 +69,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients)
         throws Exception
     {
-        // clients.withClientDetails(clientDetails());
-        // 配置在内存中，也可以从数据库中获取
-        clients.inMemory() // 使用in-memory存储
-            .withClient("哈哈") // client_id android
-            .scopes("read").secret("1") // client_secret android
-            .authorizedGrantTypes("password", "authorization_code", "refresh_token") // 该client允许的授权类型
-            .and().withClient("webapp") // client_id
-            .scopes("read")
-            // .secret("webapp") // client_secret
-            .authorizedGrantTypes("implicit")// 该client允许的授权类型
-            .and().withClient("browser").authorizedGrantTypes("refresh_token", "password").scopes(
-                "read");
+        clients.inMemory().withClient("android").scopes("read").secret(
+            "android").authorizedGrantTypes("password", "authorization_code",
+                "refresh_token").and().withClient("webapp").scopes("read").authorizedGrantTypes(
+                    "implicit").and().withClient("browser").authorizedGrantTypes("refresh_token",
+                        "password").scopes("read");
     }
 
     @Bean
@@ -96,8 +89,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.tokenStore(tokenStore()).userDetailsService(
             userDetailService).authenticationManager(authenticationManager);
         endpoints.tokenServices(defaultTokenServices());
-        // 认证异常翻译
-        // endpoints.exceptionTranslator(webResponseExceptionTranslator());
     }
 
     /**
@@ -112,7 +103,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(tokenStore());
         tokenServices.setSupportRefreshToken(true);
-        // tokenServices.setClientDetailsService(clientDetails());
         // token有效期自定义设置，默认12小时
         tokenServices.setAccessTokenValiditySeconds(60 * 60 * 12);
         // refresh_token默认30天

@@ -3,24 +3,39 @@
 <mapper namespace="com.zz.xmkj.dao.UserDao">
 
 	<select id="findRolesByUsername"
-		resultType="com.zz.xmkj.domain.Role">
-		select sr.* from uaa_user su
-		left join uaa_user_role sur on
+		parameterType="java.lang.String" resultType="com.zz.xmkj.domain.Role">
+		select sr.* from
+		uaa_user
+		su
+		left join uaa_user_role
+		sur on
 		su.id = sur.user_id
-		left join uaa_role sr on sur.role_id = sr.id
+		left join
+		uaa_role sr
+		on sur.role_id = sr.id
 		where
 		su.user_name = #{userName}
+		and sr.id is not
+		null
 	</select>
 
 	<select id="findPermissionsByRoleId"
+		parameterType="java.lang.String"
 		resultType="com.zz.xmkj.domain.Permission">
-		select sp.* from uaa_role sr
-		left join uaa_role_permission
-		srp on sr.id = srp.role_id
-		left join uaa_url_permission sp on
+		select
+		sp.*
+		from uaa_role sr
+		left join
+		uaa_role_permission
+		srp
+		on sr.id =
+		srp.role_id
+		left join
+		uaa_url_permission sp on
 		srp.permission_id = sp.id
 		where
-		sr.id = = #{roleId}
+		sr.id =#{roleId}
+		and sp.id is not null
 	</select>
 
 </mapper>

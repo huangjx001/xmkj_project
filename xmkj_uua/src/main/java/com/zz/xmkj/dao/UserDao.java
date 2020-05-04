@@ -4,6 +4,7 @@ package com.zz.xmkj.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zz.xmkj.domain.Permission;
@@ -21,7 +22,7 @@ public interface UserDao extends BaseMapper<UserInfo>
      * @param userName
      * @return
      */
-    List<Role> findRolesByUsername(String userName);
+    List<Role> findRolesByUsername(@Param("userName") String userName);
 
     /**
      * 根据角色ID获取对应的菜单权限
@@ -29,5 +30,5 @@ public interface UserDao extends BaseMapper<UserInfo>
      * @param roleId
      * @return
      */
-    List<Permission> findPermissionsByRoleId(String roleId);
+    List<Permission> findPermissionsByRoleId(@Param("roleId") String roleId);
 }

@@ -1,6 +1,8 @@
 package com.zz.xmkj.service;
 
 
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zz.xmkj.domain.UserInfo;
 import com.zz.xmkj.vo.UserRoleInfoVo;
@@ -22,5 +24,5 @@ public interface UserInfoService extends IService<UserInfo>
      * @param userName
      * @return
      */
-    UserRoleInfoVo getUserRolePermission(String userName);
+    UserRoleInfoVo getUserRolePermission(@Param("userName") String userName);
 }

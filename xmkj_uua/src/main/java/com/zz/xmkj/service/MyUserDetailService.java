@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.zz.xmkj.vo.RolePermissionInfoVo;
 import com.zz.xmkj.vo.UserRoleInfoVo;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.zz.xmkj.domain.Permission;
 
 
@@ -33,34 +34,32 @@ public class MyUserDetailService implements UserDetailsService
         throws UsernameNotFoundException
     {
         UserRoleInfoVo userRoleInfoVo = userInfoService.getUserRolePermission(userName);
+
         if (userRoleInfoVo == null)
         {
             throw new UsernameNotFoundException(userName);
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        // 可用性 :true:可用 false:不可用
-        boolean enabled = true;
-        // 过期性 :true:没过期 false:过期
-        boolean accountNonExpired = true;
-        // 有效性 :true:凭证有效 false:凭证无效
-        boolean credentialsNonExpired = true;
-        // 锁定性 :true:未锁定 false:已锁定
-        boolean accountNonLocked = true;
         for (RolePermissionInfoVo rolePermission : userRoleInfoVo.getRolePermission())
         {
-            // 角色必须是ROLE_开头，可以在数据库中设置
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-                rolePermission.getRoleName());
-            grantedAuthorities.add(grantedAuthority);
-            // 获取权限
-            for (Permission permission : rolePermission.getPermissions())
+            if (CollectionUtils.isNotEmpty(rolePermission.getPermissions()))
             {
-                GrantedAuthority authority = new SimpleGrantedAuthority(permission.getUrlPath());
-                grantedAuthorities.add(authority);
+                // 角色必须是ROLE_开头，可以在数据库中设置
+                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
+                    rolePermission.getRoleName());
+                grantedAuthorities.add(grantedAuthority);
+                // 获取权限
+                for (Permission permission : rolePermission.getPermissions())
+                {
+                    GrantedAuthority authority = new SimpleGrantedAuthority(
+                        permission.getUrlPath());
+                    grantedAuthorities.add(authority);
+                }
             }
+
         }
-        User user = new User(userName, userRoleInfoVo.getUserInfo().getPassword(), enabled,
-            accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
+        User user = new User(userName, userRoleInfoVo.getUserInfo().getPassword(), true, true,
+            true, true, grantedAuthorities);
         return user;
     }
 
