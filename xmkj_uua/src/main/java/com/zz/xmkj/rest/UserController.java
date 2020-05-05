@@ -8,9 +8,11 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -77,8 +79,8 @@ public class UserController
     }
 
     @ApiOperation(value = "查询用户信息", notes = "查询用户信息")
-    @PostMapping("/queryUserInfo")
-    public R queryUserInfo(@RequestBody String userName)
+    @GetMapping("/queryUserInfo")
+    public R queryUserInfo(@RequestParam("userName") String userName)
     {
         QueryWrapper<UserInfo> qw = new QueryWrapper<UserInfo>();
         qw.eq("user_name", userName);
