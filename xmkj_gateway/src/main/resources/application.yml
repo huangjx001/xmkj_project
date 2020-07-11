@@ -9,20 +9,23 @@ spring:
         locator:
           enabled: true
       routes:
-      - id: gateway
-        uri: lb://MICROSERVICE01
+      - id: fsh-uaa
+        uri: lb://UAA
         predicates:
-        - Path=/gate
+        - Path=/UAA/**    
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8067/eureka/ 
-             
+      defaultZone: http://localhost:8067/eureka/
 security:
   oauth2:
     client:
-      access-token-uri: http://uaa/oauth/token
-      user-authorization-uri: http://uaa/oauth/authorize
+      access-token-uri: http://UAA/oauth/token
+      user-authorization-uri: http://UAA/oauth/authorize
     resource:
-      user-info-uri: http://uaa/user
+      user-info-uri: http://UAA/user
       prefer-token-info: false
+# 配置Gateway日志等级，输出转发细节信息
+logging:
+  level:
+    org.springframework.cloud.gateway: debug      

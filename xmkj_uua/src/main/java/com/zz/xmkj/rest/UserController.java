@@ -92,5 +92,12 @@ public class UserController
         user.setPassword("******");
         return new R(user, ErrorCode.SUCCESS);
     }
+    
+    @ApiOperation(value = "测试", notes = "测试")
+    @GetMapping("/test")
+    public R test()
+    {
+        return new R( ErrorCode.SUCCESS);
+    }
 
 }

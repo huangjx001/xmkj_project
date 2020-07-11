@@ -39,6 +39,8 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
 
     private static final String OAUTH_TOKEN_URL = "/oauth/token";// 需要拦截的路由
 
+    private static final String OAUTH_UAA_TOKEN_URL = "/UAA/oauth/token";// 需要拦截的路由
+
     private RequestMatcher requestMatcher;
 
     private ApplicationContext applicationContext;
@@ -49,7 +51,9 @@ public class IntegrationAuthenticationFilter extends GenericFilterBean implement
     {
         this.requestMatcher = new OrRequestMatcher(
             new AntPathRequestMatcher(OAUTH_TOKEN_URL, "GET"),
-            new AntPathRequestMatcher(OAUTH_TOKEN_URL, "POST"));
+            new AntPathRequestMatcher(OAUTH_TOKEN_URL, "POST"),
+            new AntPathRequestMatcher(OAUTH_UAA_TOKEN_URL, "GET"),
+            new AntPathRequestMatcher(OAUTH_UAA_TOKEN_URL, "POST"));
     }
 
     @Override
