@@ -8,11 +8,9 @@
 		<artifactId>parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.xmkj</groupId>
 	<artifactId>xmkj_common</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>xmkj_common</name>
-	<packaging>pom</packaging>
 	<description>公共模块部分</description>
 
 	<properties>
@@ -59,5 +57,17 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
+	 <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

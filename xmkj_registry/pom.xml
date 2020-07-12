@@ -1,43 +1,62 @@
- <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>xmkj_registry</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-    <groupId>com.xmkj</groupId>
-    <artifactId>xmkj_registry</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+	<name>xmkj_registry</name>
+	<description>注册中心</description>
 
-    <name>xmkj_registry</name>
-    <description>注册中心</description>
+	<!-- 确认继承关系 -->
+	<parent>
+		<!--父工程 gropuId -->
+		<groupId>com.xmkj</groupId>
+		<!--父工程 artifactId -->
+		<artifactId>parent</artifactId>
+		<!--父工程 版本 -->
+		<version>1.0-SNAPSHOT</version>
+	</parent>
 
-    <!-- 确认继承关系 -->
-    <parent>
-        <!--父工程 gropuId-->
-        <groupId>com.xmkj</groupId>
-        <!--父工程 artifactId-->
-        <artifactId>parent</artifactId>
-        <!--父工程 版本-->
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+	<!--spring cloud eureka server 必须依赖 -->
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+		</dependency>
+	</dependencies>
 
-    <!--spring cloud eureka server 必须依赖-->
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-        </dependency>
-    </dependencies>
-
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.14</version>
+				<configuration>
+					<imageName>${project.artifactId}</imageName>
+					<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+					<dockerHost>http://47.94.220.152:2375</dockerHost>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
