@@ -31,9 +31,9 @@ spring:
     minEvictableIdleTimeMillis: 300000
     validationQuery: SELECT 1 from DUAL
     testWhileIdle: true
-    testOnBorrow: false
+    testOnBorrow: true
     testOnReturn: false
-    poolPreparedStatements: false
+    poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
     filters: stat,wall,log4j
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
