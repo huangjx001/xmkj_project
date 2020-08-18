@@ -95,6 +95,7 @@ public class UserController
     
     @ApiOperation(value = "测试", notes = "测试")
     @GetMapping("/test")
+    @PreAuthorize("hasRole('ROLE_1233')")
     public R test()
     {
         return new R( ErrorCode.SUCCESS);

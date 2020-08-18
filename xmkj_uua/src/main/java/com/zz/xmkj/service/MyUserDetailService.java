@@ -15,12 +15,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.stereotype.Service;
 
-import com.zz.xmkj.vo.RolePermissionInfoVo;
+import com.zz.xmkj.vo.RoleMenuInfoVo;
 import com.zz.xmkj.vo.UserRoleInfoVo;
 import com.zz.xmkj.vo.security.IntegrationAuthenticationEntity;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.zz.xmkj.domain.Permission;
+import com.zz.xmkj.domain.Menu;
 import com.zz.xmkj.domain.UserInfo;
+import com.zz.xmkj.enums.MenuNodeType;
 import com.zz.xmkj.oauth.IntegrationAuthenticationContext;
 import com.zz.xmkj.oauth.IntegrationAuthenticator;
 
@@ -59,36 +60,39 @@ public class MyUserDetailService implements UserDetailsService
             throw new UsernameNotFoundException("此账号不存在!");
         }
         userName = pojo.getUserName();
-        UserRoleInfoVo userRoleInfoVo = userInfoService.getUserRolePermission(userName);
+        UserRoleInfoVo userRoleInfoVo = userInfoService.getUserRoleMenu(userName);
 
         if (userRoleInfoVo == null)
         {
             throw new UsernameNotFoundException(userName);
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        if (CollectionUtils.isNotEmpty(userRoleInfoVo.getRolePermission()))
+        if (CollectionUtils.isNotEmpty(userRoleInfoVo.getRoleMenu()))
         {
-            for (RolePermissionInfoVo rolePermission : userRoleInfoVo.getRolePermission())
+            for (RoleMenuInfoVo roleMenu : userRoleInfoVo.getRoleMenu())
             {
-                if (CollectionUtils.isNotEmpty(rolePermission.getPermissions()))
+                if (CollectionUtils.isNotEmpty(roleMenu.getMenus()))
                 {
                     // 角色必须是ROLE_开头，可以在数据库中设置
                     GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-                        rolePermission.getRoleName());
+                        roleMenu.getRoleName());
                     grantedAuthorities.add(grantedAuthority);
                     // 获取权限
-                    for (Permission permission : rolePermission.getPermissions())
+                    for (Menu menu : roleMenu.getMenus())
                     {
-                        GrantedAuthority authority = new SimpleGrantedAuthority(
-                            permission.getUrlPath());
-                        grantedAuthorities.add(authority);
+                        if (MenuNodeType.BUTTON.getCode().equals(menu.getNodeType()))
+                        {
+                            GrantedAuthority authority = new SimpleGrantedAuthority(
+                                menu.getAuthorityLimit());
+                            grantedAuthorities.add(authority);
+                        }
                     }
                 }
 
             }
         }
-        User user = new User(userName, userRoleInfoVo.getUserInfo().getPassword(), true, true,
-            true, true, grantedAuthorities);
+        User user = new User(userName, pojo.getPassword(), true, true, true, true,
+            grantedAuthorities);
         return user;
     }
 

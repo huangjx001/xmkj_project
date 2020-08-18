@@ -23,7 +23,7 @@ security:
       access-token-uri: http://UAA/oauth/token
       user-authorization-uri: http://UAA/oauth/authorize
     resource:
-      user-info-uri: http://UAA/user
+      user-info-uri: http://UAA/oauth/check_token
       prefer-token-info: false
 # 配置Gateway日志等级，输出转发细节信息
 logging:

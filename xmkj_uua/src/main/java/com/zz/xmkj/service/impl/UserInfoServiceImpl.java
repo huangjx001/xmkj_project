@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -14,9 +15,9 @@ import com.zz.xmkj.dao.UserDao;
 import com.zz.xmkj.domain.Role;
 import com.zz.xmkj.domain.UserInfo;
 import com.zz.xmkj.service.UserInfoService;
-import com.zz.xmkj.vo.RolePermissionInfoVo;
+import com.zz.xmkj.vo.RoleMenuInfoVo;
 import com.zz.xmkj.vo.UserRoleInfoVo;
-import com.zz.xmkj.domain.Permission;
+import com.zz.xmkj.domain.Menu;
 
 
 @Service
@@ -35,7 +36,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserDao, UserInfo> implemen
     }
 
     @Override
-    public UserRoleInfoVo getUserRolePermission(String userName)
+    public List<Role> getRoleInfo(String userName)
+    {
+        List<Role> roleList = userDao.findRolesByUsername(userName);
+        return roleList;
+    }
+
+    @Override
+    public UserRoleInfoVo getUserRoleMenu(String userName)
     {
         QueryWrapper<UserInfo> qw = new QueryWrapper<UserInfo>();
         qw.eq("user_name", userName);
@@ -51,20 +59,28 @@ public class UserInfoServiceImpl extends ServiceImpl<UserDao, UserInfo> implemen
         List<Role> roles = userDao.findRolesByUsername(userName);
         if (CollectionUtils.isNotEmpty(roles))
         {
-            List<RolePermissionInfoVo> rolePermission = new ArrayList<RolePermissionInfoVo>();
+            List<RoleMenuInfoVo> roleMenus = new ArrayList<RoleMenuInfoVo>();
             roles.stream().forEach(a -> {
-                RolePermissionInfoVo rolePermissionInfoVo = new RolePermissionInfoVo();
-                rolePermissionInfoVo.setRoleName(a.getRoleName());
-                List<Permission> permissions = userDao.findPermissionsByRoleId(a.getId());
-                if (CollectionUtils.isNotEmpty(permissions))
+                RoleMenuInfoVo roleMenuInfoVo = new RoleMenuInfoVo();
+                roleMenuInfoVo.setRoleName(a.getRoleName());
+                List<Menu> menus = userDao.findMenusByRoleId(a.getId());
+                if (CollectionUtils.isNotEmpty(menus))
                 {
-                    rolePermissionInfoVo.setPermissions(permissions);
+                    roleMenuInfoVo.setMenus(menus);
                 }
-                rolePermission.add(rolePermissionInfoVo);
+                roleMenus.add(roleMenuInfoVo);
             });
-            UserRoleInfoVo.setRolePermission(rolePermission);
+            UserRoleInfoVo.setRoleMenu(roleMenus);
         }
         return UserRoleInfoVo;
+    }
+
+    @Override
+    @Cacheable(value = "userMenuCache", key = "#userName")
+    public List<Menu> getMenus(String userName)
+    {
+        List<Menu> menus = userDao.getMenus(userName);
+        return menus;
     }
 
 }

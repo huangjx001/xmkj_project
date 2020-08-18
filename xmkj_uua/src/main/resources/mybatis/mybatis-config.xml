@@ -3,7 +3,7 @@
 <configuration>
 
 	<settings>
-		<setting name="callSettersOnNulls" value="true" />
+		<setting name="callSettersOnNulls" value="false" />
 
 		<setting name="cacheEnabled" value="true" />
 

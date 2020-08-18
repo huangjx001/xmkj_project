@@ -20,6 +20,6 @@ public class UserRoleInfoVo
 {
     private UserInfo UserInfo;
 
-    private List<RolePermissionInfoVo> rolePermission;
+    private List<RoleMenuInfoVo> roleMenu;
 
 }

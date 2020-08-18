@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.util.List;
 
-import com.zz.xmkj.domain.Permission;
+import com.zz.xmkj.domain.Menu;
 
 
 /**
@@ -17,9 +17,9 @@ import com.zz.xmkj.domain.Permission;
 
 @Data
 @ApiModel(value = "角色菜单结构", description = "角色菜单结构")
-public class RolePermissionInfoVo
+public class RoleMenuInfoVo
 {
     private String roleName;
 
-    private List<Permission> permissions;
+    private List<Menu> menus;
 }

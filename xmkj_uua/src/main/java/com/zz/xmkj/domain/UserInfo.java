@@ -57,5 +57,9 @@ public class UserInfo
     @ApiModelProperty("简介")
     @Column(name = "bio")
     private String bio;
-
+    
+    @ApiModelProperty("0:启用 1:停用")
+    @Column(name = "status")
+    private String status;
+    
 }

@@ -18,17 +18,17 @@ import lombok.Data;
  * @author huangjx
  */
 
-@TableName("uaa_role_permission")
+@TableName("uaa_role_menu")
 @Data
 @ApiModel(value = "角色菜单表", description = "角色菜单表")
-public class RolePermission
+public class RoleMenu
 {
     @TableId(value = "id", type = IdType.AUTO)
     private String id;
 
-    @ApiModelProperty("权限表ID")
-    @Column(name = "permission_id")
-    private String permissionId;
+    @ApiModelProperty("菜单表Id")
+    @Column(name = "menu_id")
+    private String menuId;
 
     @ApiModelProperty("角色ID")
     @Column(name = "role_id")

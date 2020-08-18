@@ -19,23 +19,38 @@
 		null
 	</select>
 
-	<select id="findPermissionsByRoleId"
-		parameterType="java.lang.String"
-		resultType="com.zz.xmkj.domain.Permission">
-		select
+	<select id="findMenusByRoleId" parameterType="java.lang.String"
+		resultType="com.zz.xmkj.domain.Menu">
+		SELECT
 		sp.*
-		from uaa_role sr
-		left join
-		uaa_role_permission
-		srp
-		on sr.id =
-		srp.role_id
-		left join
-		uaa_url_permission sp on
-		srp.permission_id = sp.id
-		where
+		FROM
+		uaa_role sr
+		LEFT JOIN uaa_role_menu srp ON
+		sr.id = srp.role_id
+		LEFT JOIN uaa_menu sp ON srp.menu_id = sp.menu_id
+		WHERE
 		sr.id =#{roleId}
-		and sp.id is not null
+		and sp.menu_id is not null
 	</select>
 
+
+	<select id="getMenus" parameterType="java.lang.String"
+		resultType="com.zz.xmkj.domain.Menu">
+		SELECT * FROM uaa_menu
+		WHERE menu_id IN (
+		SELECT menu_id FROM
+		uaa_role_menu
+		WHERE role_id IN (
+		SELECT sr.id FROM
+		uaa_user su
+		LEFT JOIN
+		uaa_user_role sur ON su.id = sur.user_id
+		LEFT JOIN uaa_role sr ON
+		sur.role_id = sr.id
+		WHERE
+		su.user_name = #{userName}
+		AND sr.id IS NOT
+		NULL)
+		) order by order_num asc
+	</select>
 </mapper>
