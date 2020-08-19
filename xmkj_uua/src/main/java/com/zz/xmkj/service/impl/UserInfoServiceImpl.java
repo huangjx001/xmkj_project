@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zz.xmkj.constant.UuaConstant;
 import com.zz.xmkj.dao.UserDao;
 import com.zz.xmkj.domain.Role;
 import com.zz.xmkj.domain.UserInfo;
@@ -76,7 +77,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserDao, UserInfo> implemen
     }
 
     @Override
-    @Cacheable(value = "userMenuCache", key = "#userName")
+    @Cacheable(value = UuaConstant.USER_MENU_CACHE_KEY, key = "#userName")
     public List<Menu> getMenus(String userName)
     {
         List<Menu> menus = userDao.getMenus(userName);
