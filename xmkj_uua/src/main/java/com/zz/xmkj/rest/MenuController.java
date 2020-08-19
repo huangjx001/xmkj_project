@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zz.xmkj.data.R;
+import com.zz.xmkj.common.data.R;
+import com.zz.xmkj.common.domain.TreeNode;
 import com.zz.xmkj.domain.Menu;
-import com.zz.xmkj.enums.ErrorCode;
+import com.zz.xmkj.common.enums.ErrorCode;
 import com.zz.xmkj.service.MenuService;
 
 import io.swagger.annotations.Api;
@@ -44,11 +45,12 @@ public class MenuController
         return new R(ErrorCode.SUCCESS);
     }
 
+    @SuppressWarnings("unchecked")
     @ApiOperation(value = "查询菜单", notes = "查询菜单")
     @PostMapping("/queryMenu")
     public R queryMenu(@RequestParam("userName") String userName)
     {
-        List<Menu> menus = menuService.getMenuInfo(userName);
-        return new R(ErrorCode.SUCCESS);
+        List<TreeNode> treeNodes = menuService.getMenuInfo(userName);
+        return new R(treeNodes, ErrorCode.SUCCESS);
     }
 }

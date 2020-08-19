@@ -1,4 +1,4 @@
-package com.zz.xmkj.config;
+package com.zz.xmkj.common.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

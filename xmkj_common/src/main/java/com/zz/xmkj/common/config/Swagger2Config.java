@@ -1,4 +1,4 @@
-package com.zz.xmkj.config;
+package com.zz.xmkj.common.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

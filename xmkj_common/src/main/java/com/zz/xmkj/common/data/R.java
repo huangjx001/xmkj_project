@@ -1,9 +1,9 @@
-package com.zz.xmkj.data;
+package com.zz.xmkj.common.data;
 
 
 import java.io.Serializable;
 
-import com.zz.xmkj.enums.ErrorCode;
+import com.zz.xmkj.common.enums.ErrorCode;
 
 import lombok.Data;
 

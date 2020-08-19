@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zz.xmkj.data.R;
+import com.zz.xmkj.common.data.R;
 import com.zz.xmkj.domain.UserInfo;
-import com.zz.xmkj.enums.ErrorCode;
+import com.zz.xmkj.common.enums.ErrorCode;
 import com.zz.xmkj.service.UserInfoService;
 
 import io.swagger.annotations.Api;
@@ -92,13 +92,13 @@ public class UserController
         user.setPassword("******");
         return new R(user, ErrorCode.SUCCESS);
     }
-    
+
     @ApiOperation(value = "测试", notes = "测试")
     @GetMapping("/test")
     @PreAuthorize("hasRole('ROLE_1233')")
     public R test()
     {
-        return new R( ErrorCode.SUCCESS);
+        return new R(ErrorCode.SUCCESS);
     }
 
 }
