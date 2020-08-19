@@ -42,6 +42,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, Menu> implements MenuS
                     Collectors.toList());
             treeNodes = TreeUtil.bulid(covertToTreeList(menus));
         }
+
         return treeNodes;
     }
 
