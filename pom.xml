@@ -16,6 +16,7 @@
 		<!--声明 eureka_server 为当前项目 子模块 ，以后有新的子模块添加也要在此添加 -->
 		<module>xmkj_registry</module>
 		<module>xmkj_gateway</module>
+		<module>xmkj_common</module>
 		<module>xmkj_uua</module>
 	</modules>
 
