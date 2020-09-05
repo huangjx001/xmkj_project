@@ -12,7 +12,7 @@ spring:
       - id: fsh-uaa
         uri: lb://UAA
         predicates:
-        - Path=/UAA/**    
+        - Path=/UAA/**
 eureka:
   client:
     service-url:
@@ -25,7 +25,14 @@ security:
     resource:
       user-info-uri: http://UAA/oauth/check_token
       prefer-token-info: false
-# 配置Gateway日志等级，输出转发细节信息
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 logging:
   level:
-    org.springframework.cloud.gateway: debug      
+    org.springframework.cloud.gateway: debug
