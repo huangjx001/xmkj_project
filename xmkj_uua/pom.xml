@@ -9,7 +9,6 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>xmkj_uua</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>xmkj_uua</name>
 	<description>微服务统一鉴权认证中心</description>
 

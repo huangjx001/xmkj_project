@@ -9,7 +9,6 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>xmkj_gateway</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>xmkj_gateway</name>
 	<description>路由注册服务</description>
 
