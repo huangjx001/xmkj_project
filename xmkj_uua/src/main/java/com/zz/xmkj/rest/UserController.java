@@ -34,27 +34,27 @@ public class UserController
     @Autowired
     private UserInfoService userInfoService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @ApiOperation(value = "注册用户", notes = "注册用户")
     @PostMapping("/register")
     @PreAuthorize("permitAll")
     public R register(@RequestBody UserInfo userInfo)
     {
-        QueryWrapper<UserInfo> qw = new QueryWrapper<UserInfo>();
-        qw.eq("user_name", userInfo.getUserName());
-        UserInfo user = userInfoService.getOne(qw);
-        if (null != user)
-        {
-            return new R(ErrorCode.USER_IS_EXIST);
-        }
-        String password = bCryptPasswordEncoder.encode(userInfo.getPassword());
-        userInfo.setPassword(password);
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = format.format(new Date());
-        userInfo.setCreateTime(currentTime);
-        userInfoService.save(userInfo);
+//        QueryWrapper<UserInfo> qw = new QueryWrapper<UserInfo>();
+//        qw.eq("user_name", userInfo.getUserName());
+//        UserInfo user = userInfoService.getOne(qw);
+//        if (null != user)
+//        {
+//            return new R(ErrorCode.USER_IS_EXIST);
+//        }
+//        String password = bCryptPasswordEncoder.encode(userInfo.getPassword());
+//        userInfo.setPassword(password);
+//        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String currentTime = format.format(new Date());
+//        userInfo.setCreateTime(currentTime);
+//        userInfoService.save(userInfo);
         return new R(ErrorCode.SUCCESS);
     }
 
@@ -69,12 +69,12 @@ public class UserController
         {
             return new R(ErrorCode.USER_NOT_EXIST);
         }
-        String password = bCryptPasswordEncoder.encode(userInfo.getPassword());
-        if (!password.equals(user.getPassword()))
-        {
-            return new R(ErrorCode.USER_PASSWORD_ERROR);
-        }
-        user.setPassword("******");
+//        String password = bCryptPasswordEncoder.encode(userInfo.getPassword());
+//        if (!password.equals(user.getPassword()))
+//        {
+//            return new R(ErrorCode.USER_PASSWORD_ERROR);
+//        }
+//        user.setPassword("******");
         return new R(user, ErrorCode.SUCCESS);
     }
 
