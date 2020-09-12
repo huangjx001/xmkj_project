@@ -18,7 +18,7 @@ services:
       - "8068:8068"
     environment:
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: "http://47.94.220.152:8067/eureka/"
-      SERVER_PORT: "8067"
+      SERVER_PORT: "8068"
     networks:
       - eureka-net
       
@@ -33,7 +33,7 @@ services:
       SERVER_PORT: "8069"
       SPRING_REDIS_DATABASE: "0"
       SPRING_REDIS_HOST: "47.94.216.196"
-      SPRING_REDIS_PORT: "6379"
+      SPRING_REDIS_PORT: "6211"
     networks:
       - eureka-net   
 networks:
