@@ -1,8 +1,9 @@
 package com.zz.xmkj.rest;
 
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class MessageController
         String verificationCode = String.valueOf((int)((Math.random() * 9 + 1) * 1000));
         CommonResponse commonRes = messageService.sendMs(verificationCode, telphone);
         redisTemplate.opsForValue().set(UuaConstant.MESSAGE_VERFICATE_CODE + telphone,
-            verificationCode);
+            verificationCode, 60 * 5, TimeUnit.SECONDS);
         return new R(commonRes.getData(), ErrorCode.SUCCESS);
     }
 
