@@ -2,11 +2,11 @@ package com.zz.xmkj.domain;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import javax.persistence.Column;
-import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,7 +24,7 @@ import lombok.Data;
 @ApiModel(value = "用户表", description = "用户表")
 public class UserInfo
 {
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.UUID)
     private String id;
 
     @ApiModelProperty("登录的用户名")
@@ -63,7 +63,7 @@ public class UserInfo
     @Column(name = "status")
     private String status;
 
-    @Transient
+    @TableField(exist = false)
     @ApiModelProperty("验证码")
     private String verficateCode;
 
