@@ -27,4 +27,13 @@ public interface MessageService
      * @return
      */
     String isAuthCodeCanSend(String telphone);
+
+    /**
+     * 判断手机验证码是否正确
+     * 
+     * @param telphone
+     * @param verficateCode
+     * @return
+     */
+    boolean authCodeCorrect(String telphone, String verficateCode);
 }

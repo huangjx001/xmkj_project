@@ -21,6 +21,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.zz.xmkj.constant.UuaConstant;
 import com.zz.xmkj.service.MessageService;
 
@@ -52,7 +53,11 @@ public class MessageServiceImpl implements MessageService
     private String limitCount;
 
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;;
+    private StringRedisTemplate stringRedisTemplate;
+
+    @SuppressWarnings("rawtypes")
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 短信发送
@@ -112,6 +117,24 @@ public class MessageServiceImpl implements MessageService
         String res = runLuaScript("smslimit.lua", keyList);
         System.out.println("------------------lua res:" + res);
         return res;
+    }
+
+    /**
+     * 判断手机验证码是否正确
+     * 
+     * @param telphone
+     * @param verficateCode
+     * @return
+     */
+    public boolean authCodeCorrect(String telphone, String verficateCode)
+    {
+        String authKey = UuaConstant.MESSAGE_VERFICATE_CODE + telphone;
+        String redisAuthCode = (String)redisTemplate.opsForValue().get(authKey);
+        if (StringUtils.isNotEmpty(redisAuthCode))
+        {
+            return redisAuthCode.equals(verficateCode);
+        }
+        return false;
     }
 
     /**

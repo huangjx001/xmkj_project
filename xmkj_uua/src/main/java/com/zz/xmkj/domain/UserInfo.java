@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -57,9 +58,13 @@ public class UserInfo
     @ApiModelProperty("简介")
     @Column(name = "bio")
     private String bio;
-    
+
     @ApiModelProperty("0:启用 1:停用")
     @Column(name = "status")
     private String status;
-    
+
+    @Transient
+    @ApiModelProperty("验证码")
+    private String verficateCode;
+
 }
