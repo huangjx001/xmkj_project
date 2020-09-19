@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,7 @@ public class MessageController
     @SuppressWarnings("unchecked")
     @ApiOperation(value = "发送验证码", notes = "发送验证码")
     @PostMapping("/sendMs")
+    @PreAuthorize("permitAll")
     public R sendMs(@RequestParam("telphone") String telphone)
     {
         String canSendInfo = messageService.isAuthCodeCanSend(telphone);

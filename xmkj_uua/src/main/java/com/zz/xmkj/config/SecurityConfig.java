@@ -76,9 +76,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         throws Exception
     {
         http.authorizeRequests().antMatchers(HttpMethod.OPTIONS).permitAll().antMatchers(
-            "/userInfo/register/**", "/v2/api-docs", "/definitions/**", "/configuration/ui",
-            "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**",
-            "/swagger-resources/configuration/ui",
+            "/message/sendMs/**", "/userInfo/register/**", "/v2/api-docs", "/definitions/**",
+            "/configuration/ui", "/swagger-resources/**", "/configuration/security",
+            "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui",
             "/swagge‌​r-ui.html").permitAll().anyRequest().authenticated().and().csrf().disable();
     }
 
