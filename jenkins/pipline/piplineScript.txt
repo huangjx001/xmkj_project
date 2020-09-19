@@ -1,0 +1,39 @@
+pipeline {
+   agent any
+
+   stages {
+      stage('pull code') {
+         steps {
+            git credentialsId: 'ebdeb35d-c621-49e8-a3c9-959bd563044f', url: 'https://github.com/huangjx001/xmkj_project.git'
+         }
+      }
+      stage('build project') {
+         steps {
+            sh 'mvn clean install'
+            sh 'mvn -f xmkj_registry clean package docker:build'
+            sh 'mvn -f xmkj_gateway clean package docker:build'
+            sh 'mvn -f xmkj_uua clean package docker:build'
+        }
+      }
+      stage('start consul') {
+         steps {
+               script {
+                        try {
+                           sh 'docker stop $(docker ps -a -q)'
+                        } catch (Exception err) {
+                            echo 'docker stop container failed,no container'
+                            currentBuild.result = 'FAILURE'
+                        } finally {
+                          sh 'docker run -p 8500:8500 -di consul'
+                        }
+                }
+         }
+      }
+      stage('start dockers') {
+         steps {
+            sh 'docker-compose down'
+            sh 'docker-compose -f /var/lib/jenkins/workspace/lmkj_app_project/docker-compose.yml up -d'
+         }
+      }
+   }
+}
