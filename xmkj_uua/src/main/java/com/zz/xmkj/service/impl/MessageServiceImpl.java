@@ -1,7 +1,16 @@
 package com.zz.xmkj.service.impl;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Service;
 
 import com.aliyuncs.CommonRequest;
@@ -12,6 +21,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.zz.xmkj.constant.UuaConstant;
 import com.zz.xmkj.service.MessageService;
 
 
@@ -34,6 +44,15 @@ public class MessageServiceImpl implements MessageService
 
     @Value("${short-message.sign-name}")
     private String signName;
+
+    @Value("${short-message.send-seconds}")
+    private String sendSeconds;
+
+    @Value("${short-message.limit-count}")
+    private String limitCount;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;;
 
     /**
      * 短信发送
@@ -77,4 +96,48 @@ public class MessageServiceImpl implements MessageService
         }
         throw new RuntimeException("ERROR");
     }
+
+    /**
+     * 判断能否发送验证码
+     * 
+     * @param telphone
+     * @return
+     */
+    public String isAuthCodeCanSend(String telphone)
+    {
+        List<String> keyList = new ArrayList<String>();
+        keyList.add(telphone);
+        keyList.add(sendSeconds);
+        keyList.add(limitCount);
+        String res = runLuaScript("smslimit.lua", keyList);
+        System.out.println("------------------lua res:" + res);
+        return res;
+    }
+
+    /**
+     * 执行redis lua脚本
+     * 
+     * @param luaFileName
+     * @param keyList
+     * @return
+     */
+    private String runLuaScript(String luaFileName, List<String> keyList)
+    {
+        DefaultRedisScript<String> redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptSource(
+            new ResourceScriptSource(new ClassPathResource("lua/" + luaFileName)));
+        redisScript.setResultType(String.class);
+        String result = "";
+        String argsone = "none";
+        try
+        {
+            result = stringRedisTemplate.execute(redisScript, keyList, argsone);
+        }
+        catch (Exception e)
+        {
+            // logger.error("发生异常",e);
+        }
+        return result;
+    }
+
 }

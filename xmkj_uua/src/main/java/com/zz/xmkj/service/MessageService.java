@@ -19,4 +19,12 @@ public interface MessageService
      * @return
      */
     CommonResponse sendMs(String code, String num);
+
+    /**
+     * 判断能否发送验证码
+     * 
+     * @param telphone
+     * @return
+     */
+    String isAuthCodeCanSend(String telphone);
 }

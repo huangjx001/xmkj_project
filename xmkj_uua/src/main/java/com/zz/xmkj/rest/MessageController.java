@@ -14,6 +14,7 @@ import com.aliyuncs.CommonResponse;
 import com.zz.xmkj.common.data.R;
 import com.zz.xmkj.common.enums.ErrorCode;
 import com.zz.xmkj.constant.UuaConstant;
+import com.zz.xmkj.enums.SendMessageLimitType;
 import com.zz.xmkj.service.MessageService;
 
 import io.swagger.annotations.Api;
@@ -37,11 +38,20 @@ public class MessageController
     @PostMapping("/sendMs")
     public R sendMs(@RequestParam("telphone") String telphone)
     {
-        String verificationCode = String.valueOf((int)((Math.random() * 9 + 1) * 1000));
-        CommonResponse commonRes = messageService.sendMs(verificationCode, telphone);
-        redisTemplate.opsForValue().set(UuaConstant.MESSAGE_VERFICATE_CODE + telphone,
-            verificationCode, 60 * 5, TimeUnit.SECONDS);
-        return new R(commonRes.getData(), ErrorCode.SUCCESS);
+        String canSendInfo = messageService.isAuthCodeCanSend(telphone);
+        if (SendMessageLimitType.CAN_SEND.getCode().equals(canSendInfo))
+        {
+            String verificationCode = String.valueOf((int)((Math.random() * 9 + 1) * 1000));
+            CommonResponse commonRes = messageService.sendMs(verificationCode, telphone);
+            redisTemplate.opsForValue().set(UuaConstant.MESSAGE_VERFICATE_CODE + telphone,
+                verificationCode, 60 * 5, TimeUnit.SECONDS);
+            return new R(commonRes.getData(), ErrorCode.SUCCESS);
+        }
+        if (SendMessageLimitType.LIMIT_OUT.getCode().equals(canSendInfo))
+        {
+            return new R(ErrorCode.LIMIT_IS_OUT);
+        }
+        return new R(ErrorCode.INTERVAL_TIME);
     }
 
 }
