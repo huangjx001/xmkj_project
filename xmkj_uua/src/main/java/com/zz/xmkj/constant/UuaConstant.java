@@ -8,7 +8,9 @@ package com.zz.xmkj.constant;
 public class UuaConstant
 {
     public static final String USER_MENU_CACHE_KEY = "userMenuCache";
+    
+    public static final String BASE_CONFIG_CACHE_KEY = "baseConfigCache";
 
     public static final String MESSAGE_VERFICATE_CODE = "SmsAuthKey:";
-
+    
 }

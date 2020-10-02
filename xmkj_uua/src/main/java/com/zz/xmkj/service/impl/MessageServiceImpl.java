@@ -3,9 +3,9 @@ package com.zz.xmkj.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -23,6 +23,9 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.zz.xmkj.constant.UuaConstant;
+import com.zz.xmkj.enums.BaseConfigModuleType;
+import com.zz.xmkj.enums.BaseConfigShortMessageModuleKeyType;
+import com.zz.xmkj.service.BaseConfigService;
 import com.zz.xmkj.service.MessageService;
 
 
@@ -34,26 +37,12 @@ import com.zz.xmkj.service.MessageService;
 @Service
 public class MessageServiceImpl implements MessageService
 {
-    @Value("${short-message.access-key-id}")
-    private String accessKeyId;
-
-    @Value("${short-message.template-code}")
-    private String templateCode;
-
-    @Value("${short-message.access-key-secret}")
-    private String accessKeySecret;
-
-    @Value("${short-message.sign-name}")
-    private String signName;
-
-    @Value("${short-message.send-seconds}")
-    private String sendSeconds;
-
-    @Value("${short-message.limit-count}")
-    private String limitCount;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private BaseConfigService baseConfigService;
 
     @SuppressWarnings("rawtypes")
     @Autowired
@@ -68,6 +57,16 @@ public class MessageServiceImpl implements MessageService
      */
     public CommonResponse sendMs(String code, String num)
     {
+        Map<String, String> basicCongMap = baseConfigService.getConfigMap(
+            BaseConfigModuleType.SHORT_MESSAGE.getCode());
+        String accessKeyId = basicCongMap.get(
+            BaseConfigShortMessageModuleKeyType.ACCESS_KEY_ID.getName());
+        String accessKeySecret = basicCongMap.get(
+            BaseConfigShortMessageModuleKeyType.ACCESS_KEY_SECRET.getName());
+        String signName = basicCongMap.get(
+            BaseConfigShortMessageModuleKeyType.SIGN_NAME.getName());
+        String templateCode = basicCongMap.get(
+            BaseConfigShortMessageModuleKeyType.TEMPLATE_CODE.getName());
         DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId,
             accessKeySecret);
         IAcsClient client = new DefaultAcsClient(profile);
@@ -110,6 +109,12 @@ public class MessageServiceImpl implements MessageService
      */
     public String isAuthCodeCanSend(String telphone)
     {
+        Map<String, String> basicCongMap = baseConfigService.getConfigMap(
+            BaseConfigModuleType.SHORT_MESSAGE.getCode());
+        String sendSeconds = basicCongMap.get(
+            BaseConfigShortMessageModuleKeyType.SEND_SECONDS.getName());
+        String limitCount = basicCongMap.get(
+            BaseConfigShortMessageModuleKeyType.LIMIT_COUNT.getName());
         List<String> keyList = new ArrayList<String>();
         keyList.add(telphone);
         keyList.add(sendSeconds);

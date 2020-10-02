@@ -34,17 +34,9 @@ mybatis-plus:
   global-config:
     db-config:
       db-type: mysql
-      
-short-message:
-  access-key-id: LTAI4GKsjeNRPnCAyniMMKn8
-  access-key-secret: 0jfDOjlDQEfb71IdGi1tvjaVJ5ts2D
-  template-code: SMS_202390236
-  sign-name: 湖南留铭科技有限公司
-  send-seconds: 300
-  limit-count: 5     
-      
+
 swagger:
   enable: true
-  
 initCaches:
-  userMenuCache: 3600s  
+  userMenuCache: 3600s
+  baseConfigCache: 3600s
