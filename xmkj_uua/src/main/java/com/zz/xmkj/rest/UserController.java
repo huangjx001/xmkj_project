@@ -22,6 +22,7 @@ import com.zz.xmkj.domain.UserInfo;
 import com.zz.xmkj.common.enums.ErrorCode;
 import com.zz.xmkj.service.MessageService;
 import com.zz.xmkj.service.UserInfoService;
+import com.zz.xmkj.vo.LoginUserVo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +39,9 @@ public class UserController
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @ApiOperation(value = "注册用户", notes = "注册用户")
     @PostMapping("/register")
@@ -65,7 +69,7 @@ public class UserController
                 return new R(ErrorCode.TELPHONE_IS_EXIST);
             }
         }
-        String password = new BCryptPasswordEncoder().encode(userInfo.getPassword());
+        String password = bCryptPasswordEncoder.encode(userInfo.getPassword());
         userInfo.setPassword(password);
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = format.format(new Date());
@@ -76,17 +80,17 @@ public class UserController
 
     @ApiOperation(value = "登录用户", notes = "登录用户")
     @PostMapping("/login")
-    public R login(@RequestBody UserInfo userInfo)
+    public R login(@RequestBody LoginUserVo userInfo)
     {
         QueryWrapper<UserInfo> qw = new QueryWrapper<UserInfo>();
-        qw.eq("user_name", userInfo.getUserName().trim());
+        qw.eq("user_name", userInfo.getUserNameOrTelphone().trim()).or().eq("telphone",
+            userInfo.getUserNameOrTelphone().trim());
         UserInfo user = userInfoService.getOne(qw);
         if (null == user)
         {
             return new R(ErrorCode.USER_NOT_EXIST);
         }
-        String password = new BCryptPasswordEncoder().encode(userInfo.getPassword());
-        if (!password.equals(user.getPassword()))
+        if (!bCryptPasswordEncoder.matches(userInfo.getPassword(), user.getPassword()))
         {
             return new R(ErrorCode.USER_PASSWORD_ERROR);
         }
