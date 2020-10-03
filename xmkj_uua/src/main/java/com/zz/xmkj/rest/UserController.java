@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.zz.xmkj.common.data.R;
 import com.zz.xmkj.domain.UserInfo;
 import com.zz.xmkj.common.enums.ErrorCode;
+import com.zz.xmkj.config.SpringContextUtil;
 import com.zz.xmkj.service.MessageService;
 import com.zz.xmkj.service.UserInfoService;
 import com.zz.xmkj.vo.LoginUserVo;
@@ -39,9 +40,6 @@ public class UserController
 
     @Autowired
     private MessageService messageService;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @ApiOperation(value = "注册用户", notes = "注册用户")
     @PostMapping("/register")
@@ -69,6 +67,8 @@ public class UserController
                 return new R(ErrorCode.TELPHONE_IS_EXIST);
             }
         }
+        BCryptPasswordEncoder bCryptPasswordEncoder = SpringContextUtil.getBean(
+            BCryptPasswordEncoder.class);
         String password = bCryptPasswordEncoder.encode(userInfo.getPassword());
         userInfo.setPassword(password);
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -90,6 +90,8 @@ public class UserController
         {
             return new R(ErrorCode.USER_NOT_EXIST);
         }
+        BCryptPasswordEncoder bCryptPasswordEncoder = SpringContextUtil.getBean(
+            BCryptPasswordEncoder.class);
         if (!bCryptPasswordEncoder.matches(userInfo.getPassword(), user.getPassword()))
         {
             return new R(ErrorCode.USER_PASSWORD_ERROR);
