@@ -32,4 +32,7 @@ public class R<T> implements Serializable
         this.msg = errcode.getMessage();
     }
 
+    public R()
+    {}
+
 }

@@ -23,7 +23,6 @@ import com.zz.xmkj.common.enums.ErrorCode;
 import com.zz.xmkj.config.SpringContextUtil;
 import com.zz.xmkj.service.MessageService;
 import com.zz.xmkj.service.UserInfoService;
-import com.zz.xmkj.vo.LoginUserVo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -80,11 +79,12 @@ public class UserController
 
     @ApiOperation(value = "登录用户", notes = "登录用户")
     @PostMapping("/login")
-    public R login(@RequestBody LoginUserVo userInfo)
+    @PreAuthorize("permitAll")
+    public R login(@RequestBody UserInfo userInfo)
     {
         QueryWrapper<UserInfo> qw = new QueryWrapper<UserInfo>();
-        qw.eq("user_name", userInfo.getUserNameOrTelphone().trim()).or().eq("telphone",
-            userInfo.getUserNameOrTelphone().trim());
+        qw.eq("user_name", userInfo.getUserName().trim()).or().eq("telphone",
+            userInfo.getUserName().trim());
         UserInfo user = userInfoService.getOne(qw);
         if (null == user)
         {

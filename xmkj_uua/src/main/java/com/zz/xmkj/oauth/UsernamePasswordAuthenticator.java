@@ -42,7 +42,7 @@ public class UsernamePasswordAuthenticator extends AbstractPreparableIntegration
             throw new OAuth2Exception("用户名或密码不能为空");
         }
         QueryWrapper<UserInfo> qw = new QueryWrapper<UserInfo>();
-        qw.eq("user_name", name);
+        qw.eq("user_name", name).or().eq("telphone", name.trim());
         UserInfo user = userInfoService.getOne(qw);
         if (bCryptPasswordEncoder.matches(pwd, user.getPassword()))
         {
